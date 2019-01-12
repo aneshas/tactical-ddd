@@ -7,7 +7,5 @@ namespace Tactical.DDD.EventSourcing
         where TIdentity : IDomainIdentity
     {
         int Version { get; }
-        
-        IEnumerable<IDomainEvent> UncommittedEvents { get; }
     }
 }

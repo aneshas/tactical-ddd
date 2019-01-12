@@ -1,6 +1,6 @@
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public class Assignee : ValueObject
+    public sealed class Assignee : ValueObject
     {
         public string Name { get; private set; }
         public string DisplayName { get; private set; }
