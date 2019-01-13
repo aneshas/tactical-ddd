@@ -19,7 +19,7 @@ namespace Tactical.DDD
             if (obj.GetType() != this.GetType()) return false;
             return Equals((Entity<TIdentity>) obj);
         }
-
+   
         public static bool operator ==(Entity<TIdentity> lhs, Entity<TIdentity> rhs)
         {
             if (ReferenceEquals(lhs, null))
@@ -32,7 +32,8 @@ namespace Tactical.DDD
 
         public override int GetHashCode()
         {
-            return EqualityComparer<TIdentity>.Default.GetHashCode(Id);
+            // ????
+            return base.GetHashCode();
         }
     }
 }

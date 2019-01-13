@@ -5,6 +5,6 @@ namespace Tactical.DDD
     public interface IAggregate<out TIdentity> : IEntity<TIdentity>
         where TIdentity : IDomainIdentity 
     {
-        IReadOnlyCollection<IDomainEvent> UncommittedEvents { get; }
+        IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
     }
 }

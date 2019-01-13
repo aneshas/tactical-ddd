@@ -5,6 +5,18 @@ namespace Tactical.DDD
 {
     public abstract class ValueObject
     {
+        public override int GetHashCode()
+        {
+            return GetType().GetProperties() 
+                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Aggregate((x, y) => x ^ y);
+        }
+
+        public ValueObject GetCopy()
+        {
+            return this.MemberwiseClone() as ValueObject;
+        }
+        
         public bool Equals(ValueObject other)
         {
             var lhsProps = GetType().GetProperties();
@@ -39,8 +51,5 @@ namespace Tactical.DDD
         }
 
         public static bool operator !=(ValueObject lhs, ValueObject rhs) => !(lhs == rhs);
-
-        // ???
-        // GetHashcode since its immutable ???
     }
 }
