@@ -7,6 +7,6 @@ namespace Tactical.DDD.EventSourcing
     {
         Task<IEnumerable<IDomainEvent>> LoadEventsAsync(IDomainIdentity aggregateId);
 
-        Task SaveEventsAsync(IDomainIdentity aggregateId, int version, IEnumerable<IDomainEvent> events);
+        Task SaveEventsAsync(IDomainIdentity aggregateId, int version, IReadOnlyCollection<IDomainEvent> events);
     }
 } 

@@ -15,7 +15,6 @@ namespace Tactical.DDD
         protected void RemoveDomainEvent(IDomainEvent @event) =>
             _domainEvents.Remove(@event);
 
-        // public?
         protected void ClearDomainEvents() =>
             _domainEvents.Clear();
         
