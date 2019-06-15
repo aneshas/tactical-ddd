@@ -5,9 +5,11 @@ namespace Tactical.DDD
 {
     public abstract class ValueObject
     {
+        protected abstract IEnumerable<object> GetAtomicValues();
+
         public override int GetHashCode()
         {
-            return GetType().GetProperties() 
+            return GetType().GetProperties()
                 .Select(x => x != null ? x.GetHashCode() : 0)
                 .Aggregate((x, y) => x ^ y);
         }
@@ -16,22 +18,36 @@ namespace Tactical.DDD
         {
             return this.MemberwiseClone() as ValueObject;
         }
-        
-        public bool Equals(ValueObject other)
-        {
-            var lhsProps = GetType().GetProperties();
-            var rhsProps = other.GetType().GetProperties();
 
-            foreach (var lhsProp in lhsProps)
+        public bool Equals(ValueObject obj)
+        {
+            if (obj == null || obj.GetType() != GetType())
             {
-                var lhs = lhsProp.GetValue(this);
-                var rhs = rhsProps.FirstOrDefault(p => p.Name == lhsProp.Name)?.GetValue(other);
-                
-                if (lhs != rhs && !lhs.Equals(rhs))
-                    return false;
+                return false;
             }
 
-            return true;
+            var other = (ValueObject) obj;
+
+            using (var thisValues = GetAtomicValues().GetEnumerator())
+            {
+                using (var otherValues = other.GetAtomicValues().GetEnumerator())
+                {
+                    while (thisValues.MoveNext() && otherValues.MoveNext())
+                    {
+                        if (ReferenceEquals(thisValues.Current, null) ^ ReferenceEquals(otherValues.Current, null))
+                        {
+                            return false;
+                        }
+
+                        if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current))
+                        {
+                            return false;
+                        }
+                    }
+
+                    return !thisValues.MoveNext() && !otherValues.MoveNext();
+                }
+            }
         }
 
         public override bool Equals(object obj)

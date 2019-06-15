@@ -3,12 +3,16 @@ using System.Collections.Generic;
 namespace Tactical.DDD.EventSourcing
 {
     public abstract class AggregateRoot<TIdentity> : DDD.AggregateRoot<TIdentity>, IAggregate<TIdentity>
-        where TIdentity : IDomainIdentity
+        where TIdentity : IEntityId
     {
         public int Version { get; private set; }
 
+        protected AggregateRoot() {}
+        
         protected AggregateRoot(IEnumerable<IDomainEvent> events)
         {
+            if (events == null) return;
+            
             foreach (var domainEvent in events)
             {
                 Mutate(domainEvent);
@@ -17,7 +21,7 @@ namespace Tactical.DDD.EventSourcing
 
         private void Mutate(IDomainEvent @event)
         {
-            ((dynamic) this).When((dynamic) @event);
+            ((dynamic) this).On((dynamic) @event);
             Version++;
         } 
 

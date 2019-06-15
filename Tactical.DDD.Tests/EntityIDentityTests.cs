@@ -12,9 +12,9 @@ namespace Tactical.DDD.Tests
             var guid = Guid.NewGuid();
             var id = new BacklogItemId(guid);
 
-            var item = new BacklogItem(id, "item summary");
+            var item = BacklogItem.FromSummary(id, "item summary");
 
-            Assert.Equal(guid.ToString(), item.Id.Identity);
+            Assert.Equal(guid.ToString(), item.Id.ToString());
         }
 
         [Fact]
@@ -29,6 +29,16 @@ namespace Tactical.DDD.Tests
             Assert.Equal(id0, id1);
             Assert.True(id0 == id1);
             Assert.False(id0 != id1);
+        }
+
+        [Fact]
+        public void IDomainIdentity_ToString_Calls_ToString_Override()
+        {
+            var guid = Guid.NewGuid();
+            
+            var id = new BacklogItemId(guid);
+            
+            Assert.Equal(guid.ToString(), ((IEntityId) id).ToString());
         }
     }
 }

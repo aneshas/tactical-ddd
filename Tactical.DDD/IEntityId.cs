@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Tactical.DDD
 {
-    public interface IDomainIdentity 
+    public interface IEntityId  
     {
-        string Identity { get; } 
+        string ToString();
     }
 }

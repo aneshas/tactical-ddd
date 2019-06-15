@@ -1,12 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public class BacklogItemId : DomainIdentity
+    public class BacklogItemId : EntityId 
     {
         private readonly Guid _id;
-
-        public override string Identity => _id.ToString();
 
         public BacklogItemId()
         {
@@ -16,6 +15,11 @@ namespace Tactical.DDD.Tests.TestAggregate
         public BacklogItemId(Guid id)
         {
             _id = id;
+        }
+
+        public override string ToString()
+        {
+            return _id.ToString();
         }
     }
 }

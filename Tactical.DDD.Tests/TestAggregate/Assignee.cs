@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Tactical.DDD.Tests.TestAggregate
 {
     public sealed class Assignee : ValueObject
@@ -12,6 +14,12 @@ namespace Tactical.DDD.Tests.TestAggregate
         {
             Name = name;
             DisplayName = displayName;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Name;
+            yield return DisplayName;
         }
     }
 }

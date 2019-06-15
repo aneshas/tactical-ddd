@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Tactical.DDD
 {
     public abstract class Entity<TIdentity> : IEntity<TIdentity>
-        where TIdentity : IDomainIdentity
+        where TIdentity : IEntityId
     {
         public virtual TIdentity Id { get; protected set; }
 

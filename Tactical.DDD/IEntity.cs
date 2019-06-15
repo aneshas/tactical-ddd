@@ -1,7 +1,7 @@
 ﻿namespace Tactical.DDD
 {
     public interface IEntity<out TIdentity>
-        where TIdentity : IDomainIdentity 
+        where TIdentity : IEntityId 
     {
         TIdentity Id { get; } 
     }

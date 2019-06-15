@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Tactical.DDD
 {
     public abstract class AggregateRoot<TIdentity> : Entity<TIdentity>
-        where TIdentity : IDomainIdentity
+        where TIdentity : IEntityId
     {
         private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
         
