@@ -1,0 +1,7 @@
+language: csharp
+solution: Tactical.sln
+mono: none
+dotnet: 2.2.107 
+install:
+  - dotnet restore 
+  - dotnet test
