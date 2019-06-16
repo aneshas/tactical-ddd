@@ -43,7 +43,5 @@ namespace Tactical.DDD.Tests
             Assert.True(assignee0 == assignee1);
             Assert.False(assignee0 != assignee1);
         }
-
-        // TODO - Test pvt / protected fields ...
-    }
+   }
 }

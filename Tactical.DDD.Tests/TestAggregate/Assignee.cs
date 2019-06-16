@@ -8,6 +8,7 @@ namespace Tactical.DDD.Tests.TestAggregate
         public string DisplayName { get; private set; }
 
         private int SomethingProtected { get; set; }
+        
         private int SomethingPrivate { get; set; }
 
         public Assignee(string name, string displayName)

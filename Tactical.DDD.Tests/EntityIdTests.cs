@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Tactical.DDD.Tests
 {
-    public class EntityIDentityTests
+    public class EntityIdTests
     {
         [Fact]
         public void TestBacklogItemId()

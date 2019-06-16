@@ -1,8 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
         <LangVersion>7.2</LangVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Tactical DDD</Title>
+        <Description>Lightweight tactical ddd pattern helpers</Description>
+        <RepositoryUrl>https://github.com/aneshas/tactical-ddd</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>DDD, DomainDrivenDesign</PackageTags>
+        <TargetFrameworks>netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
+        <PackageId>TacticalDDD</PackageId>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="TestExtensions" />
+    </ItemGroup>
 
 </Project>

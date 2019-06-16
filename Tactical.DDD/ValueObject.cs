@@ -3,8 +3,18 @@ using System.Linq;
 
 namespace Tactical.DDD
 {
+    /// <summary>
+    /// ValueObject represents value object tactical DDD pattern.
+    /// Main properties of value objects is their immutability
+    /// and structural equality (two value objects are equal if
+    /// their properties are equal) 
+    /// </summary>
     public abstract class ValueObject
     {
+        /// <summary>
+        /// Override GetAtomicValues in order to implement structural equality for your value object.
+        /// </summary>
+        /// <returns>Enumerable of properties to participate in equality comparison</returns>
         protected abstract IEnumerable<object> GetAtomicValues();
 
         public override int GetHashCode()

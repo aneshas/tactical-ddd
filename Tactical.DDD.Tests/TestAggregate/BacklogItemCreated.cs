@@ -6,11 +6,11 @@ namespace Tactical.DDD.Tests.TestAggregate
     {
         public string Summary { get; }
 
-        public string BacklogItemId { get; }
+        public BacklogItemId BacklogItemId { get; }
 
         public DateTime CreatedAt { get; }
 
-        public BacklogItemCreated(string summary, string backlogItemId)
+        public BacklogItemCreated(string summary, BacklogItemId backlogItemId)
         {
             CreatedAt = DateTime.Now;
             

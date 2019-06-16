@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Tactical.DDD.Tests.TestAggregate
@@ -11,7 +10,7 @@ namespace Tactical.DDD.Tests.TestAggregate
         {
         }
 
-        public BacklogItem(IEnumerable<IDomainEvent> events) : base(events)
+        public BacklogItem(IReadOnlyCollection<IDomainEvent> events) : base(events)
         {
         }
 
@@ -19,7 +18,7 @@ namespace Tactical.DDD.Tests.TestAggregate
         {
             var item = new BacklogItem();
 
-            item.Apply(new BacklogItemCreated(summary, id.ToString()));
+            item.Apply(new BacklogItemCreated(summary, id));
 
             return item;
         }
@@ -34,7 +33,7 @@ namespace Tactical.DDD.Tests.TestAggregate
 
         public void On(BacklogItemCreated @event)
         {
-            Id = new BacklogItemId(Guid.Parse(@event.BacklogItemId));
+            Id = @event.BacklogItemId;
             Summary = @event.Summary;
         }
     }
