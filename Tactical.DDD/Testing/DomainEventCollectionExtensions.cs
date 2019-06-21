@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tactical.DDD.TestExtensions
+namespace Tactical.DDD.Testing
 {
     public static class DomainEventCollectionExtensions
     {
@@ -36,6 +36,12 @@ namespace Tactical.DDD.TestExtensions
         {
             var @event = events.Single(e => e is T);
             assertAction(@event as T);
+        }
+
+        public static void ExpectOne<T>(this IEnumerable<IDomainEvent> events)
+                    where T : class
+        {
+            var @event = events.Single(e => e is T);
         }
     }
 }

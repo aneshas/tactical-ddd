@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Tactical.DDD.EventSourcing
 {
-    public abstract class AggregateRoot<TIdentity> : DDD.AggregateRoot<TIdentity>, IAggregate<TIdentity>
+    public abstract class AggregateRoot<TIdentity> : DDD.AggregateRoot<TIdentity>, IAggregateRoot<TIdentity>
         where TIdentity : IEntityId
     {
         public int Version { get; private set; }

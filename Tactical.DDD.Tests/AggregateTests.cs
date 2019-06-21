@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Tactical.DDD.TestExtensions;
 using Tactical.DDD.Tests.TestAggregate;
 using Xunit;
 

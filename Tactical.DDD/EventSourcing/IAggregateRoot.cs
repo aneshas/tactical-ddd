@@ -3,7 +3,7 @@ using DDD = Tactical.DDD;
 
 namespace Tactical.DDD.EventSourcing
 {
-    public interface IAggregate<out TIdentity> : DDD.IAggregate<TIdentity>
+    public interface IAggregateRoot<out TIdentity> : DDD.IAggregateRoot<TIdentity>
         where TIdentity : IEntityId
     {
         int Version { get; }
