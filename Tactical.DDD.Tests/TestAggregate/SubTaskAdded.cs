@@ -4,6 +4,8 @@ namespace Tactical.DDD.Tests.TestAggregate
 {
     public class SubTaskAdded : IDomainEvent
     {
+        public IEntityId AggregateId { get; }
+
         public DateTime CreatedAt { get; }
         
         public string Title { get; }

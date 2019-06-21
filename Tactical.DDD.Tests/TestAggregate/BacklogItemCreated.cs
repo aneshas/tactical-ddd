@@ -8,6 +8,8 @@ namespace Tactical.DDD.Tests.TestAggregate
 
         public BacklogItemId BacklogItemId { get; }
 
+        public IEntityId AggregateId { get; }
+
         public DateTime CreatedAt { get; }
 
         public BacklogItemCreated(string summary, BacklogItemId backlogItemId)
