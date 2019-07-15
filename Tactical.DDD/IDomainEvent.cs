@@ -4,6 +4,6 @@ namespace Tactical.DDD
 {
     public interface IDomainEvent
     {
-        DateTime CreatedAt { get; }
+        DateTime CreatedAt { get; set; }
     }
 }
