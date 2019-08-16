@@ -4,11 +4,11 @@ namespace Tactical.DDD.Tests.TestAggregate
 {
     public sealed class BacklogItem : EventSourcing.AggregateRoot<BacklogItemId>
     {
+        public override BacklogItemId Id { get; protected set; }
+
         public string Summary { get; private set; }
 
-        private BacklogItem() : base()
-        {
-        }
+        private BacklogItem() { }
 
         public BacklogItem(IReadOnlyCollection<IDomainEvent> events) : base(events)
         {

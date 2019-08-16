@@ -5,7 +5,11 @@ namespace Tactical.DDD
     public abstract class Entity<TIdentity> : IEntity<TIdentity>
         where TIdentity : IEntityId
     {
-        public virtual TIdentity Id { get; protected set; }
+        /// <summary>
+        /// Id defines entity uniqueness and is used for Equality
+        /// comparisons and hash code generation.
+        /// </summary>
+        public abstract TIdentity Id { get; protected set; }
 
         public bool Equals(Entity<TIdentity> other)
         {
@@ -16,14 +20,17 @@ namespace Tactical.DDD
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
+
             return Equals((Entity<TIdentity>) obj);
         }
    
         public static bool operator ==(Entity<TIdentity> lhs, Entity<TIdentity> rhs)
         {
             if (ReferenceEquals(lhs, null))
+            {
                 return ReferenceEquals(rhs, null);
+            }
 
             return lhs.Equals(rhs);
         }
@@ -32,8 +39,12 @@ namespace Tactical.DDD
 
         public override int GetHashCode()
         {
-            // ????
-            return base.GetHashCode();
+            if (Id.Equals(default(TIdentity)))
+            {
+                return base.GetHashCode();
+            }
+
+            return GetType().GetHashCode() ^ Id.GetHashCode();
         }
     }
 }

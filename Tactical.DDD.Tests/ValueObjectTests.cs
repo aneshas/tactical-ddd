@@ -34,7 +34,7 @@ namespace Tactical.DDD.Tests
         {
             var assignee0 = new Assignee("Max Mathew", "max");
             var assignee1 = assignee0.GetCopy() as Assignee;
-            
+
             Assert.Equal(assignee0.Name, assignee1?.Name);
             Assert.Equal(assignee0.DisplayName, assignee1?.DisplayName);
 
@@ -43,5 +43,15 @@ namespace Tactical.DDD.Tests
             Assert.True(assignee0 == assignee1);
             Assert.False(assignee0 != assignee1);
         }
-   }
+
+        [Fact]
+        public void ValueObject_StructurallyNotEqualsToNull()
+        {
+            var assignee = new Assignee("Max Mathew", "max");
+
+            Assert.False(assignee.Equals(null));
+            Assert.False(null == assignee);
+            Assert.True(assignee != null);
+        }
+    }
 }

@@ -19,7 +19,7 @@ namespace Tactical.DDD
 
         public override int GetHashCode()
         {
-            return GetType().GetProperties()
+            return GetAtomicValues()
                 .Select(x => x != null ? x.GetHashCode() : 0)
                 .Aggregate((x, y) => x ^ y);
         }
@@ -36,42 +36,24 @@ namespace Tactical.DDD
                 return false;
             }
 
-            var other = (ValueObject) obj;
-
-            using (var thisValues = GetAtomicValues().GetEnumerator())
-            {
-                using (var otherValues = other.GetAtomicValues().GetEnumerator())
-                {
-                    while (thisValues.MoveNext() && otherValues.MoveNext())
-                    {
-                        if (ReferenceEquals(thisValues.Current, null) ^ ReferenceEquals(otherValues.Current, null))
-                        {
-                            return false;
-                        }
-
-                        if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current))
-                        {
-                            return false;
-                        }
-                    }
-
-                    return !thisValues.MoveNext() && !otherValues.MoveNext();
-                }
-            }
+            return GetHashCode() == obj.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
+
             return Equals((ValueObject) obj);
         }
 
         public static bool operator ==(ValueObject lhs, ValueObject rhs)
         {
             if (ReferenceEquals(lhs, null))
+            {
                 return ReferenceEquals(rhs, null);
+            }
 
             return lhs.Equals(rhs);
         }
