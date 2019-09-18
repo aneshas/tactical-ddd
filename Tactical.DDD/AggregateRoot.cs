@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Tactical.DDD
 {
-    public abstract class AggregateRoot<TIdentity> : Entity<TIdentity>
+    public abstract class AggregateRoot<TIdentity> : Entity<TIdentity>, IAggregateRoot<TIdentity>
         where TIdentity : IEntityId
     {
         private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();

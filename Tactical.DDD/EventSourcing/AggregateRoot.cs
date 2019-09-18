@@ -7,28 +7,28 @@ namespace Tactical.DDD.EventSourcing
     {
         public int Version { get; private set; }
 
-        protected AggregateRoot() {}
-        
+        protected AggregateRoot()
+        {
+        }
+
         protected AggregateRoot(IEnumerable<IDomainEvent> events)
         {
             if (events == null) return;
-            
+
             foreach (var domainEvent in events)
             {
                 Mutate(domainEvent);
+                Version++;
             }
         }
-
-        private void Mutate(IDomainEvent @event)
-        {
-            ((dynamic) this).On((dynamic) @event);
-            Version++;
-        } 
 
         protected void Apply(IDomainEvent @event)
         {
             Mutate(@event);
             AddDomainEvent(@event);
         }
+
+        private void Mutate(IDomainEvent @event) =>
+            ((dynamic) this).On((dynamic) @event);
     }
 }

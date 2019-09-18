@@ -59,7 +59,7 @@ namespace Tactical.DDD.Tests
             
             Assert.Equal(id, item.Id);
             Assert.Equal("summary", item.Summary);
-            Assert.Equal(1, item.Version);
+            Assert.Equal(0, item.Version);
             
             Assert.Contains(item.DomainEvents, e => e is BacklogItemCreated);
         }
