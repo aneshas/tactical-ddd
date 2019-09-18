@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tactical.DDD.Testing
+namespace Tactical.DDD.EventSourcing.Testing
 {
     public static class DomainEventCollectionExtensions
     {

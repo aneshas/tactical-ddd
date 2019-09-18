@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tactical.DDD.Testing
+namespace Tactical.DDD.EventSourcing.Testing
 {
     public abstract class AggregateSpecification<T, TId>
-        where T : IAggregateRoot<TId> where TId: IEntityId 
+        where T : DDD.IAggregateRoot<TId> where TId: IEntityId 
     {
         protected T Aggregate;
         protected IReadOnlyCollection<IDomainEvent> ProducedEvents = default;

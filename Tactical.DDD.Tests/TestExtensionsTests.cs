@@ -1,4 +1,4 @@
-using Tactical.DDD.Testing;
+using Tactical.DDD.EventSourcing.Testing;
 using Tactical.DDD.Tests.TestAggregate;
 using Xunit;
 
