@@ -11,7 +11,7 @@ namespace Tactical.DDD.Tests.TestAggregate
         public IEntityId AggregateId { get; }
 
         public DateTime CreatedAt { get; set; }
-
+        
         public BacklogItemCreated(string summary, BacklogItemId backlogItemId)
         {
             CreatedAt = DateTime.Now;
