@@ -21,6 +21,14 @@ namespace Tactical.DDD.EventSourcing
                 Version++;
             }
         }
+        
+        protected void Apply(IEnumerable<IDomainEvent> events)
+        {
+            foreach (var @event in events)
+            {
+                Apply(@event); 
+            }
+        }
 
         protected void Apply(IDomainEvent @event)
         {
