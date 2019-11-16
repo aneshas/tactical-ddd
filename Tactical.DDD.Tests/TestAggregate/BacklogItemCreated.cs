@@ -2,7 +2,7 @@ using System;
 
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public sealed class BacklogItemCreated : IDomainEvent
+    public sealed class BacklogItemCreated : IDomainEvent 
     {
         public string Summary { get; }
 
@@ -19,5 +19,6 @@ namespace Tactical.DDD.Tests.TestAggregate
             Summary = summary;
             BacklogItemId = backlogItemId;
         }
+
     }
 }

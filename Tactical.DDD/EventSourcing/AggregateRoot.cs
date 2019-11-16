@@ -11,7 +11,7 @@ namespace Tactical.DDD.EventSourcing
         {
         }
 
-        protected AggregateRoot(IEnumerable<IDomainEvent> events)
+        protected AggregateRoot(IReadOnlyCollection<IDomainEvent> events)
         {
             if (events == null) return;
 
