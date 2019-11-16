@@ -4,9 +4,9 @@
 
         <IsPackable>false</IsPackable>
 
-        <LangVersion>7.2</LangVersion>
+        <LangVersion>8</LangVersion>
 
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
