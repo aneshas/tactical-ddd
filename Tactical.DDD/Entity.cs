@@ -11,18 +11,13 @@ namespace Tactical.DDD
         /// </summary>
         public abstract TIdentity Id { get; protected set; }
 
-        public bool Equals(Entity<TIdentity> other)
-        {
-            return EqualityComparer<TIdentity>.Default.Equals(Id, other.Id);
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
 
-            return Equals((Entity<TIdentity>) obj);
+            return EqualityComparer<TIdentity>.Default.Equals(Id, ((Entity<TIdentity>)obj).Id);
         }
    
         public static bool operator ==(Entity<TIdentity> lhs, Entity<TIdentity> rhs)
