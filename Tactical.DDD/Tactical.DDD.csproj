@@ -14,7 +14,16 @@
         <PackageIconUrl>https://secure.gravatar.com/avatar/3bcba991d947a75cab31ba5183bb0ae0?s=512&amp;r=g&amp;d=retro</PackageIconUrl>
         <PackageVersion>1.0.1</PackageVersion>
         <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    </PropertyGroup>
+    
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
     <ItemGroup>
       <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
