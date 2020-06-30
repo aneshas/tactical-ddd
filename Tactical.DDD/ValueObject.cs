@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +21,7 @@ namespace Tactical.DDD
         public override int GetHashCode()
         {
             return GetAtomicValues()
-                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Select((x, i) => $"{x?.GetType().FullName}_{x?.GetHashCode() ?? 0}_{Math.Pow(2, i)}".GetHashCode())
                 .Aggregate((x, y) => x ^ y);
         }
 
