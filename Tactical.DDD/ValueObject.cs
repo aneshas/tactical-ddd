@@ -13,6 +13,7 @@ namespace Tactical.DDD
     {
         /// <summary>
         /// This is needed as salt for index. If only index was used, there is a chance that i ^ i+some_low_number produces same value
+        /// Issue is shown in following fiddle: https://dotnetfiddle.net/E3tgYY
         /// </summary>
         private const int HighPrime = 557927;
 
