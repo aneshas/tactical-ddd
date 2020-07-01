@@ -53,5 +53,16 @@ namespace Tactical.DDD.Tests
             Assert.False(null == assignee);
             Assert.True(assignee != null);
         }
+
+        [Fact]
+        public void ValueObject_HashCodeValueShouldBeDependentOnIndex()
+        {
+            var assignee0 = new Assignee("sam", "sam");
+            var assignee1 = new Assignee("joe", "joe");
+            var assignee2 = new Assignee("sam", "sam");
+
+            Assert.True(assignee0 != assignee1);
+            Assert.False(assignee0 != assignee2);
+        }
     }
 }

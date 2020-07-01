@@ -12,6 +12,12 @@ namespace Tactical.DDD
     public abstract class ValueObject
     {
         /// <summary>
+        /// This is needed as salt for index. If only index was used, there is a chance that i ^ i+some_low_number produces same value
+        /// Issue is shown in following fiddle: https://dotnetfiddle.net/E3tgYY
+        /// </summary>
+        private const int HighPrime = 557927;
+
+        /// <summary>
         /// Override GetAtomicValues in order to implement structural equality for your value object.
         /// </summary>
         /// <returns>Enumerable of properties to participate in equality comparison</returns>
@@ -20,7 +26,7 @@ namespace Tactical.DDD
         public override int GetHashCode()
         {
             return GetAtomicValues()
-                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Select((x, i) => (x != null ? x.GetHashCode() : 0) + (HighPrime * i))
                 .Aggregate((x, y) => x ^ y);
         }
 
