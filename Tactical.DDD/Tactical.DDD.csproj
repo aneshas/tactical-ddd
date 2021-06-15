@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>7.3</LangVersion>
+        <LangVersion>9</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Tactical DDD</Title>
         <Description>Lightweight tactical DDD and Event Sourcing helpers</Description>
@@ -13,11 +13,11 @@
         <PackageProjectUrl>https://github.com/aneshas/tactical-ddd</PackageProjectUrl>
         <PackageIconUrl>https://secure.gravatar.com/avatar/3bcba991d947a75cab31ba5183bb0ae0?s=512&amp;r=g&amp;d=retro</PackageIconUrl>
         <PackageVersion>1.0.1</PackageVersion>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

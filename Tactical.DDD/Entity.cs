@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace Tactical.DDD
 {
-    public abstract class Entity<TIdentity> : IEntity<TIdentity>
-        where TIdentity : IEntityId
+    public abstract class Entity<TIdentity>  
+        where TIdentity : EntityId 
     {
         /// <summary>
         /// Id defines entity uniqueness and is used for Equality
         /// comparisons and hash code generation.
         /// </summary>
-        public abstract TIdentity Id { get; protected set; }
+        public TIdentity Id { get; protected set; }
 
         public override bool Equals(object obj)
         {

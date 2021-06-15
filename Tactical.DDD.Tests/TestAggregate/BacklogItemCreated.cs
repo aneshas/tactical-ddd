@@ -2,23 +2,10 @@ using System;
 
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public sealed class BacklogItemCreated : IDomainEvent 
+    public sealed record BacklogItemCreated : DomainEvent
     {
-        public string Summary { get; }
-
-        public BacklogItemId BacklogItemId { get; }
-
-        public IEntityId AggregateId { get; }
-
-        public DateTime CreatedAt { get; set; }
+        public string BacklogItemId { get; init; }
         
-        public BacklogItemCreated(string summary, BacklogItemId backlogItemId)
-        {
-            CreatedAt = DateTime.Now;
-            
-            Summary = summary;
-            BacklogItemId = backlogItemId;
-        }
-
+        public string Summary { get; init; }
     }
 }

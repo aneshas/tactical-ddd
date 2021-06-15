@@ -1,16 +1,17 @@
+using System;
 using System.Collections.Generic;
 
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public sealed class BacklogItem : EventSourcing.AggregateRoot<BacklogItemId>
+    public sealed class BacklogItem : AggregateRoot<BacklogItemId>
     {
-        public override BacklogItemId Id { get; protected set; }
-
         public string Summary { get; private set; }
 
-        private BacklogItem() { }
+        private BacklogItem()
+        {
+        }
 
-        public BacklogItem(IReadOnlyCollection<IDomainEvent> events) : base(events)
+        public BacklogItem(IReadOnlyCollection<DomainEvent> events) : base(events)
         {
         }
 
@@ -18,22 +19,33 @@ namespace Tactical.DDD.Tests.TestAggregate
         {
             var item = new BacklogItem();
 
-            item.Apply(new BacklogItemCreated(summary, id));
+            item.Apply(new BacklogItemCreated
+            {
+                BacklogItemId = id,
+                CreatedAt = DateTime.UtcNow,
+                Summary = summary
+            });
 
             return item;
         }
 
-        public TaskId AddTask(string title)
+        public SubTaskId AddTask(string title)
         {
-            var task = new SubTask(new TaskId(), title);
-            AddDomainEvent(new SubTaskAdded(task.Id, task.Title));
+            var task = new SubTask(new SubTaskId(), title);
+
+            AddDomainEvent(new SubTaskAdded
+            {
+                BacklogItemId = Id,
+                SubTaskId = task.Id,
+                Title = title
+            });
 
             return task.Id;
         }
 
         public void On(BacklogItemCreated @event)
         {
-            Id = @event.BacklogItemId;
+            Id = BacklogItemId.Parse(@event.BacklogItemId);
             Summary = @event.Summary;
         }
     }
