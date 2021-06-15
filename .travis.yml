@@ -1,7 +1,7 @@
 language: csharp
 solution: Tactical.sln
 mono: none
-dotnet: 3.0 
+dotnet: 5.0 
 script:
   - dotnet restore 
   - dotnet test

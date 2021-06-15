@@ -1,148 +1,196 @@
 # Tactical DDD Helpers
+
 [![Build Status](https://travis-ci.org/aneshas/tactical-ddd.svg?branch=master)](https://travis-ci.org/aneshas/tactical-ddd)
 [![Build status](https://ci.appveyor.com/api/projects/status/vef5ta3j36p7efnn?svg=true)](https://ci.appveyor.com/project/aneshas/tactical-ddd)
 
-This repository contains lightweight helpers to help implement common DDD/Event Sourcing tactical patterns, such as ValueObject,
-Entity, AggregateRoot-s, EntityId-s etc..
-These helpers mostly provide help around equality and by providing some useful methods to deal with domain events...
+`Install-Package TacticalDDD`
+
+TacticalDDD contains lightweight helpers that I find myself implementing over and over again related to DDD/Event
+Sourcing tactical patterns, such as Value Objects, Entities, AggregateRoots, EntityIds etc..
+
+These helpers are mostly in the form of simple abstractions that provide help around equality and contain useful helper
+methods...
+
+## 5.0.0 Breaking changes
+
+Heads up.
+I did a major refactor and there are a lot of breaking changes plus the package now
+depends on .NET 5 and uses C# 9.
+
+Version `1.0.32` is the last version that supported C# 7 and .NET Standard
 
 ### Reasoning behind this package
-The reason this package exists is because there exists a small set of facts that should always be true when implementing DDD patterns.
-I will not go too much into details, I will assume that you are well versed in these topics.
+
+I am a big proponent of "Little copy is better than a little dependency" mantra, but I also believe there exists a small
+set of facts that should always be true when implementing DDD patterns. Keeping this in mind I did (and will) try to
+keep this package as thin and as pragmatic as possible.
+
+Note: I assume that you are well versed in these topics.
 
 #### 1. There is almost always a notion of an Entity
-Entity is something that has an Identity (Id), and thus this dictates Entity equality implementation, eg. an entity is equal to another
-entity if their Id's are equal. This is exactly what `Entity` abstract class provides: An Id and equality implementations.
 
-`Entity` implements `IEntity` which ensures that you need to have an Id
+Entity is something that has an Identity (Id), and thus this dictates Entity equality implementation, eg. an entity is
+equal to another entity if their Id's are equal. This is exactly what `Entity` abstract class provides: An Id and
+equality implementations.
 
 #### 2. What is an id
-I chose that an `EntityId` is something that has to be serializable to string eg. it needs to implement `ToString()` method.
-I provided a helper class for you to use which is named `EntityId`. Apart from implementing `IEntityId` it is also marked 
-as a `ValueObject` which means that it provides structural equality (more on value object below).
+
+`EntityId` is something that has to be serializable to string eg. it needs to implement `ToString()` method. I provided
+a helper record for you to use, named `EntityId`. It extends `record` instead of a `class` which means that it provides
+structural equality (more on value object below).
 
 An example of Entity and an Entity Id:
+
 ```c#
-using Tactical.DDD;
+    public sealed record CustomerId : EntityId
+    {
+        private Guid _guid;
 
-public sealed class PersonId : EntityId {
-  private Guid _guid;
-  
-  public PersonId() {
-    _guid = Guid.NewGuid();
-  }
-  
-  // You might implement this constructor in order to be able to
-  // parse your id from string
-  public PersonId(string id) {
-    _guid = Guid.Parse(id);
-  }
-  
-  // Mandatory ToString implementation
-  public override string ToString() => _guid.ToString();
-}
+        private CustomerId(string guid) => 
+            Guid.Parse(guid);
+
+        public CustomerId() =>
+            _guid = Guid.NewGuid();
+
+        // You might implement this static factory method in order to be able to
+        // parse your id from string
+        public static CustomerId Parse(string id) => new(id);
+
+        // ToString implementation
+        public override string ToString() => _guid.ToString();
+    }
 ```
+
 ```c#
-using Tactical.DDD;
-
-public sealed class Person : Entity<PersonId> {
-  public override PersonId Id { get; protected set; }
-}
+    public sealed class Customer : Entity<CustomerId>
+    {
+        
+    }
 ```
-So this is how you would define an entity along with it's id.
 
-What this tries to enforce is that your Id's are value objects but not some primitive values. I will not go into much
-details why avoiding "primitive obsession" is useful.
+This is how you would define an entity along with it's id.
+
+What this tries to enforce is that your entities always have an id and that the id is a value object (avoiding primitive obsession). I will not go into much
+
+details why this is useful.
 
 #### 3. AggregateRoots and Domain Events
-Like you may already know aggregate root is an entity that sits on top of an aggregate tree.
-So in my implementation this is what it is. `AggregateRoot` extends `Entity` and provides same identity utilities.
 
-One extra thing an `AggregateRoot` has is ability to deal with domain events, eg. it provides a public readonly collection of
-domain events and some protected methods to manage that collection.
+Like you may already know aggregate root is an entity that sits on top of an aggregate tree. So in my implementation
+this is what it is. `AggregateRoot` extends `Entity` and provides same identity utilities.
 
-So for example if you decided that your `Person` entity is in fact an aggregate, this is how you would implement it:
+One extra thing an `AggregateRoot` has is ability to deal with domain events, eg. it provides a public readonly
+collection of domain events and some protected methods to manage that collection.
+
+In previous versions I had a separate `AggregateRoot` implementation that contained utility methods for
+an event sourced aggregate. In retrospect I think this was a bit confusing and redundant so in version `5.0.0` I
+decided to merge those two.
+
+So for example if you decided that your `Customer` entity is in fact an aggregate, this is how you would implement it as an `AggregateRoot`:
 
 ```c#
-using Tactical.DDD;
-
-public sealed class Person : AggregateRoot<PersonId> {
-  public override PersonId Id { get; protected set; }
-}
+    public sealed class Customer : AggregateRoot<CustomerId>
+    {
+        
+    }
 ```
 
-There is another implementation of `AggregateRoot` in `Tactical.DDD.EventSourcing` namespace that provides extra capabilities
-if you are modeling an event sourced aggregate, namely `Apply(IDomainEvent @event)` method and a few constructors.
+Here is an example of an event sourced `Customer` aggregate:
 
-Here is an example of an event sourced `Person` aggregate:
 ```c#
-using Tactical.DDD.EventSourcing;
+    public sealed class Customer : AggregateRoot<CustomerId>
+    {
+        // We re-export constructor provided by our AggregateRoot implementation
+        // which is used to rehydrate our aggregate from domain events
+        public Customer(IEnumerable<DomainEvent> events) : base(events)
+        {
+        }
 
-public sealed class Person : AggregateRoot<PersonId> {
-  public override PersonId Id { get; protected set; }
-  
-  // We re-export constructor provided by our AggregateRoot implementation
-  // which is used to rehydrate our aggregate from domain events
-  public Person(IEnumerable<IDomainEvent> events) : base(events) { }
-  
-  // We want to encapsulate and thus hide parameterless constructor 
-  private Person() { }
-  
-  // A use case method
-  public void ChangeName(string name) {
-    // ... validate
-    
-    // Apply domain event
-    Apply(new PersonChangedName(name));
-  }
-  
-  // This method is automagically called when we Apply PersonChangedName and also
-  // if we instantiate our aggregate via `public Person(IEnumerable<IDomainEvent> events)`
-  public void On(PersonChangedName @event) {
-    // ... do stuff, eg. mutate the aggregate itself
-  }
-}
+        // We want to encapsulate and thus hide parameterless constructor 
+        private Customer()
+        {
+        }
 
-// Our domain event
-public sealed class PersonChangedName : IDomainEvent {
-  public DateTime CreatedAt { get; set; } // required by IDomainEvent
-  
-  public string NewName { get; }
-  
-  public PersonChangedName(string newName) {
-    CreatedAt = DateTime.Now();
-    NewName = newName
-  }
-}
+        // Use case method
+        // (newName would preferably be value object in itself instead of a primitive type
+        public void ChangeNameTo(string newName)
+        {
+            Apply(
+                new CustomerChangedName
+                {
+                    CreatedAt = DateTime.UtcNow, // Don't do this
+                    CustomerId = Id, // Notice how CustomerId is implicitly convertible to string
+                    NewName = newName
+                }
+            );
+        }
+
+        // This method is automagically called when we Apply a domain event and also
+        // if we instantiate our aggregate via `public Customer(IEnumerable<IDomainEvent> events)`
+        public void On(CustomerChangedName @event)
+        {
+            // ... implement the actual mutation 
+        }
+    }
+
+    // Our domain event
+    public sealed record CustomerChangedName : DomainEvent
+    {
+        public string CustomerId { get; init; }
+
+        public string NewName { get; init; }
+    }
 ```
 
 #### 4. Value Objects
-Again, won't go into details why value objects are useful.
-What this package provides is an implementation of equality methods in order to provide structural equality.
 
-Example of an immutable structurally equal value object:
+Last but not least. Value objects imho are the most valuable pattern.
+
+Prior to `5.0.0` this package contained `ValueObject` abstract class that helped with structural 
+equality. With C# 9 this is no longer necessary so I ditched it.
+
+Records pretty much provide you with all that is needed to create your own value objects.
+All you need to do is to provide your own constraints, mostly during creation / parsing.
+
+With `ValueObject` being out of the picture, I did add another helper record named `ConstrainedValue` which
+provides a neat way of wrapping primitive types and adding simple constraints to them in order to avoid primitive obsession.
+
+An example usage of `ConstrainedValue`:
+
 ```c#
-public sealed class Address : ValueObject {
-  public string Street { get; }
-  
-  public string HouseNumber { get; }
-  
-  public Address(string street, string houseNumber) {
-    Street = street;
-    HouseNumber = houseNumber;
-  }
-  
-  // We are required to implement this method in order to provide
-  // the properties that we want to participate in structural equality
-  // eg. in this case an address is equal to another address if both
-  // Street and HouseNumber properties are equal
-  protected override IEnumerable<object> GetAtomicValues()
-  {
-    yield return Street;
-    yield return HouseNumber;
-  }
+    // We create a simple wrapper for our string that enforces
+    // string length. Second generic parameter enforces the type of exception
+    // thrown if the Rule fails.
+    public record String50 : ConstrainedValue<string, ArgumentException>
+    {
+        private static bool Rule(string value) => value.Length < 50;
+
+        public String50(string value) : base(value, Rule)
+        {
+        }
+    }
+
+    // Now our Name value object can simply be defined as:
+    public sealed record Name(String50 FirstName, String50 LastName);
 }
 ```
 
-There are a few other things which I will explain on another occasion.
+You can and should use `ConstrainedValue` in order to create simple wrappers around primitive types
+eg String50, PositiveInt, FutureDate etc... which contain simple constraints and which you then can compose into
+more complex value objects (records)
 
+#### Helpers
+
+I aim to add simple wrappers that prove to be useful to `Tactical.DDD.Helpers` namespace.
+In fact there is an example implementation of `ConstrainedString` already there which you can use
+to more succinctly create `String50` wrapper from the example above.
+
+```c#
+    public record String50 : ConstrainedString
+    {
+        // Provide min and max length
+        public String50(string value) : base(value, 5, 50)
+        {
+        }
+    }
+```

@@ -2,22 +2,12 @@ using System;
 
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public class SubTaskAdded : IDomainEvent
+    public record SubTaskAdded : DomainEvent
     {
-        public IEntityId AggregateId { get; }
-
-        public DateTime CreatedAt { get; set; }
+        public string BacklogItemId { get; init; }
         
-        public string Title { get; }
-        
-        public TaskId TaskId { get; }
+        public string SubTaskId { get; init; }
 
-        public SubTaskAdded(TaskId id, string title)
-        {
-            CreatedAt = DateTime.Now;
-            
-            TaskId = id;
-            Title = title;
-        }
+        public string Title { get; init; }
     }
 }

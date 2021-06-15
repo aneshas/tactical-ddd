@@ -1,25 +1,23 @@
 using System;
-using System.Collections.Generic;
 
 namespace Tactical.DDD.Tests.TestAggregate
 {
-    public class BacklogItemId : EntityId 
+    public record BacklogItemId : EntityId
     {
-        private readonly Guid _id;
+        public readonly Guid Guid;
 
         public BacklogItemId()
         {
-            _id = Guid.NewGuid();
+            Guid = Guid.NewGuid();
         }
 
-        public BacklogItemId(Guid id)
+        public BacklogItemId(Guid guid)
         {
-            _id = id;
+            Guid = guid;
         }
 
-        public override string ToString()
-        {
-            return _id.ToString();
-        }
+        public override string ToString() => Guid.ToString();
+
+        public static BacklogItemId Parse(string id) => new BacklogItemId(Guid.Parse(id));
     }
 }

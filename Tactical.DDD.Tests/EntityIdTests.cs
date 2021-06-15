@@ -7,18 +7,7 @@ namespace Tactical.DDD.Tests
     public class EntityIdTests
     {
         [Fact]
-        public void TestBacklogItemId()
-        {
-            var guid = Guid.NewGuid();
-            var id = new BacklogItemId(guid);
-
-            var item = BacklogItem.FromSummary(id, "item summary");
-
-            Assert.Equal(guid.ToString(), item.Id.ToString());
-        }
-
-        [Fact]
-        public void TestEntityIdentityEquality()
+        public void IdsAreEqual()
         {
             var guid = Guid.NewGuid();
 
@@ -38,7 +27,7 @@ namespace Tactical.DDD.Tests
             
             var id = new BacklogItemId(guid);
             
-            Assert.Equal(guid.ToString(), ((IEntityId) id).ToString());
+            Assert.Equal(guid.ToString(), ((EntityId) id).ToString());
         }
     }
 }
