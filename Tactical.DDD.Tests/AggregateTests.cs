@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Tactical.DDD.Tests.TestAggregate;
 using Xunit;
 
