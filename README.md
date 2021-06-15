@@ -62,7 +62,7 @@ An example of Entity and an Entity Id:
 ```
 
 ```c#
-     public sealed class Customer : Entity<CustomerId>
+    public sealed class Customer : Entity<CustomerId>
     {
         
     }
