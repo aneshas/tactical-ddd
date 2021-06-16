@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 
 namespace Tactical.DDD
 {
@@ -24,6 +27,35 @@ namespace Tactical.DDD
                 throw Activator.CreateInstance(
                     typeof(TE),
                     $"Invalid value for {GetType().Name}: {value}"
+                ) as TE;
+            }
+
+            _value = value;
+        }
+
+        protected ConstrainedValue(T value)
+        {
+            var attributes = GetType()
+                .GetConstructors()
+                .First()
+                .GetParameters()[0]
+                .GetCustomAttributes<ValidationAttribute>();
+
+            foreach (var attr in attributes)
+            {
+                if (attr.IsValid(value)) continue;
+
+                var message = $"Invalid value for {GetType().Name}: {value}";
+
+                if (attr.ErrorMessage != null)
+                {
+                    message = attr.FormatErrorMessage(attr.ErrorMessage);
+                }
+
+                // ReSharper disable once PossibleNullReferenceException
+                throw Activator.CreateInstance(
+                    typeof(TE),
+                    message
                 ) as TE;
             }
 

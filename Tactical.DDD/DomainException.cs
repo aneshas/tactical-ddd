@@ -8,11 +8,11 @@ namespace Tactical.DDD
         {
         }
 
-        protected DomainException(string message) : base(message)
+        public DomainException(string message) : base(message)
         {
         }
 
-        protected DomainException(string message, Exception innerException)
+        public DomainException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

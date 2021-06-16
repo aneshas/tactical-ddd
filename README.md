@@ -153,44 +153,36 @@ Records pretty much provide you with all that is needed to create your own value
 All you need to do is to provide your own constraints, mostly during creation / parsing.
 
 With `ValueObject` being out of the picture, I did add another helper record named `ConstrainedValue` which
-provides a neat way of wrapping primitive types and adding simple constraints to them in order to avoid primitive obsession.
+provides a neat way of wrapping primitive types and adding simple constraints via built in data annotations in order to avoid primitive obsession.
 
 An example usage of `ConstrainedValue`:
 
 ```c#
     // We create a simple wrapper for our string that enforces
     // string length. Second generic parameter enforces the type of exception
-    // thrown if the Rule fails.
-    public record String50 : ConstrainedValue<string, ArgumentException>
+    // thrown if validation fails.
+    public sealed record String10 : ConstrainedValue<string, DomainException>
     {
-        private static bool Rule(string value) => value.Length < 50;
-
-        public String50(string value) : base(value, Rule)
+        public String10(
+            [MinLength(5)]
+            [MaxLength(10)] string value) : base(value)
         {
         }
     }
 
     // Now our Name value object can simply be defined as:
-    public sealed record Name(String50 FirstName, String50 LastName);
+    public sealed record Name(String10 FirstName, String10 LastName);
 }
 ```
+
+```c#
+    // Value itself can simply be used as
+    var value = new String10("A value");
+    
+    // And is implicitly assignable to it's generic type (in this case a string)
+    string val = value;
+``` 
 
 You can and should use `ConstrainedValue` in order to create simple wrappers around primitive types
 eg String50, PositiveInt, FutureDate etc... which contain simple constraints and which you then can compose into
 more complex value objects (records)
-
-#### Helpers
-
-I aim to add simple wrappers that prove to be useful to `Tactical.DDD.Helpers` namespace.
-In fact there is an example implementation of `ConstrainedString` already there which you can use
-to more succinctly create `String50` wrapper from the example above.
-
-```c#
-    public record String50 : ConstrainedString
-    {
-        // Provide min and max length
-        public String50(string value) : base(value, 5, 50)
-        {
-        }
-    }
-```
