@@ -55,7 +55,7 @@ namespace Tactical.DDD
                 // ReSharper disable once PossibleNullReferenceException
                 throw Activator.CreateInstance(
                     typeof(TE),
-                    message
+                    message 
                 ) as TE;
             }
 
