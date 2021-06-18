@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Tactical.DDD
 {
-    public abstract record ConstrainedValue<T, TE> where TE : Exception, new()
+    public abstract record ConstrainedValue<T, TE> where TE : DomainException
     {
         private readonly T _value;
 
