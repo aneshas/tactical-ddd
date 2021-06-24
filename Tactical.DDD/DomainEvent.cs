@@ -4,6 +4,6 @@ namespace Tactical.DDD
 {
     public abstract record DomainEvent
     {
-        public DateTime CreatedAt { get; init; }
+        public DateTime CreatedAt { get; set; }
     }
 }
