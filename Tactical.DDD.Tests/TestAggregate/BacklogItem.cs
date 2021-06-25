@@ -20,11 +20,11 @@ namespace Tactical.DDD.Tests.TestAggregate
             var item = new BacklogItem();
 
             item.Apply(new BacklogItemCreated
-            {
-                BacklogItemId = id,
-                CreatedAt = DateTime.UtcNow,
-                Summary = summary
-            });
+            (
+                DateTime.UtcNow,
+                id,
+                summary
+            ));
 
             return item;
         }
@@ -34,11 +34,12 @@ namespace Tactical.DDD.Tests.TestAggregate
             var task = new SubTask(new SubTaskId(), title);
 
             AddDomainEvent(new SubTaskAdded
-            {
-                BacklogItemId = Id,
-                SubTaskId = task.Id,
-                Title = title
-            });
+            (
+                DateTime.UtcNow,
+                Id,
+                task.Id,
+                title
+            ));
 
             return task.Id;
         }
