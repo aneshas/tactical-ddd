@@ -4,4 +4,4 @@ mono: none
 dotnet: 5.0 
 script:
   - dotnet restore 
-  - dotnet test
+  - dotnet test ./Tactical.DDD/Tactical.DDD.csproj 

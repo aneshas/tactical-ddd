@@ -4,6 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.DDD", "Tactical.DD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.DDD.Tests", "Tactical.DDD.Tests\Tactical.DDD.Tests.csproj", "{9269845C-75E5-419B-89DC-7958ED9F1366}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.DDD.EventSourcing", "Tactical.DDD.EventSourcing\Tactical.DDD.EventSourcing.csproj", "{4AD5116C-4766-485A-BA24-EF900E9F63D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.DDD.EventSourcing.Postgres", "Tactical.DDD.EventSourcing.Postgres\Tactical.DDD.EventSourcing.Postgres.csproj", "{A3C1E330-7523-4903-8ADE-73687B54D5A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.DDD.EventSourcing.Integration.Tests", "Tactical.DDD.EventSourcing.Integration.Tests\Tactical.DDD.EventSourcing.Integration.Tests.csproj", "{6BBBBEC1-C221-409A-97E7-D01D2992BF1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,17 @@ Global
 		{9269845C-75E5-419B-89DC-7958ED9F1366}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9269845C-75E5-419B-89DC-7958ED9F1366}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9269845C-75E5-419B-89DC-7958ED9F1366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AD5116C-4766-485A-BA24-EF900E9F63D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD5116C-4766-485A-BA24-EF900E9F63D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD5116C-4766-485A-BA24-EF900E9F63D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD5116C-4766-485A-BA24-EF900E9F63D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C1E330-7523-4903-8ADE-73687B54D5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C1E330-7523-4903-8ADE-73687B54D5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C1E330-7523-4903-8ADE-73687B54D5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C1E330-7523-4903-8ADE-73687B54D5A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BBBBEC1-C221-409A-97E7-D01D2992BF1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BBBBEC1-C221-409A-97E7-D01D2992BF1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BBBBEC1-C221-409A-97E7-D01D2992BF1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BBBBEC1-C221-409A-97E7-D01D2992BF1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
