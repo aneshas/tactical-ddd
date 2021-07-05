@@ -16,8 +16,9 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <TargetFramework>net5.0</TargetFramework>
-        <Authors>Anes Hasicic &lt;me@anes.io></Authors>
+        <Authors>Anes Hasicic &lt;me@anes.io&gt;</Authors>
         <PackageVersion>1.0.1</PackageVersion>
+        <PackageId>TacticalDDD.EventSourcing</PackageId>
     </PropertyGroup>
 
     <ItemGroup>
