@@ -2,6 +2,22 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Tactical.DDD.EventSourcing.Postgres</Title>
+        <Authors>Anes Hasicic &lt;me@anes.io&gt;</Authors>
+        <Description>Postgres EventStore and Aperture adapters</Description>
+        <PackageProjectUrl>https://github.com/aneshas/tactical-ddd</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/aneshas/tactical-ddd/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageIconUrl>https://secure.gravatar.com/avatar/3bcba991d947a75cab31ba5183bb0ae0?s=512&amp;r=g&amp;d=retro</PackageIconUrl>
+        <RepositoryUrl>https://github.com/aneshas/tactical-ddd</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>DDD, DomainDrivenDesign, EventSourcing, EventStore</PackageTags>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <TargetFramework>net5.0</TargetFramework>
+        <Authors>Anes Hasicic &lt;me@anes.io></Authors>
+        <PackageVersion>1.0.1</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
