@@ -42,30 +42,30 @@ structural equality (more on value object below).
 An example of Entity and an Entity Id:
 
 ```c#
-    public sealed record CustomerId : EntityId
-    {
-        private Guid _guid;
+public sealed record CustomerId : EntityId
+{
+    private Guid _guid;
 
-        private CustomerId(string guid) => 
-            Guid.Parse(guid);
+    private CustomerId(string guid) => 
+        Guid.Parse(guid);
 
-        public CustomerId() =>
-            _guid = Guid.NewGuid();
+    public CustomerId() =>
+        _guid = Guid.NewGuid();
 
-        // You might implement this static factory method in order to be able to
-        // parse your id from string
-        public static CustomerId Parse(string id) => new(id);
+    // You might implement this static factory method in order to be able to
+    // parse your id from string
+    public static CustomerId Parse(string id) => new(id);
 
-        // ToString implementation
-        public override string ToString() => _guid.ToString();
-    }
+    // ToString implementation
+    public override string ToString() => _guid.ToString();
+}
 ```
 
 ```c#
-    public sealed class Customer : Entity<CustomerId>
-    {
-        
-    }
+public sealed class Customer : Entity<CustomerId>
+{
+
+}
 ```
 
 This is how you would define an entity along with it's id.
@@ -89,57 +89,57 @@ decided to merge those two.
 So for example if you decided that your `Customer` entity is in fact an aggregate, this is how you would implement it as an `AggregateRoot`:
 
 ```c#
-    public sealed class Customer : AggregateRoot<CustomerId>
-    {
-        
-    }
+public sealed class Customer : AggregateRoot<CustomerId>
+{
+
+}
 ```
 
 Here is an example of an event sourced `Customer` aggregate:
 
 ```c#
-    public sealed class Customer : AggregateRoot<CustomerId>
+public sealed class Customer : AggregateRoot<CustomerId>
+{
+    // We re-export constructor provided by our AggregateRoot implementation
+    // which is used to rehydrate our aggregate from domain events
+    public Customer(IEnumerable<DomainEvent> events) : base(events)
     {
-        // We re-export constructor provided by our AggregateRoot implementation
-        // which is used to rehydrate our aggregate from domain events
-        public Customer(IEnumerable<DomainEvent> events) : base(events)
-        {
-        }
-
-        // We want to encapsulate and thus hide parameterless constructor 
-        private Customer()
-        {
-        }
-
-        // Use case method
-        // (newName would preferably be value object in itself instead of a primitive type
-        public void ChangeNameTo(string newName)
-        {
-            Apply(
-                new CustomerChangedName
-                {
-                    CreatedAt = DateTime.UtcNow, // Don't do this
-                    CustomerId = Id, // Notice how CustomerId is implicitly convertible to string
-                    NewName = newName
-                }
-            );
-        }
-
-        // This method is automagically called when we Apply a domain event and also
-        // if we instantiate our aggregate via `public Customer(IEnumerable<IDomainEvent> events)`
-        public void On(CustomerChangedName @event)
-        {
-            // ... implement the actual mutation 
-        }
     }
 
-    // Our domain event
-    public sealed record CustomerChangedName : DomainEvent
+    // We want to encapsulate and thus hide parameterless constructor 
+    private Customer()
     {
-        public string CustomerId { get; init; }
-
-        public string NewName { get; init; }
     }
+
+    // Use case method
+    // (newName would preferably be value object in itself instead of a primitive type
+    public void ChangeNameTo(string newName)
+    {
+        Apply(
+            new CustomerChangedName
+            {
+                CreatedAt = DateTime.UtcNow, // Don't do this
+                CustomerId = Id, // Notice how CustomerId is implicitly convertible to string
+                NewName = newName
+            }
+        );
+    }
+
+    // This method is automagically called when we Apply a domain event and also
+    // if we instantiate our aggregate via `public Customer(IEnumerable<IDomainEvent> events)`
+    public void On(CustomerChangedName @event)
+    {
+        // ... implement the actual mutation 
+    }
+}
+
+// Our domain event
+public sealed record CustomerChangedName : DomainEvent
+{
+    public string CustomerId { get; init; }
+
+    public string NewName { get; init; }
+}
 ```
 
 #### 4. Value Objects
@@ -158,29 +158,28 @@ provides a neat way of wrapping primitive types and adding simple constraints vi
 An example usage of `ConstrainedValue`:
 
 ```c#
-    // We create a simple wrapper for our string that enforces
-    // string length. Second generic parameter enforces the type of exception
-    // thrown if validation fails.
-    public sealed record String10 : ConstrainedValue<string, DomainException>
+// We create a simple wrapper for our string that enforces
+// string length. Second generic parameter enforces the type of exception
+// thrown if validation fails.
+public sealed record String10 : ConstrainedValue<string, DomainException>
+{
+    public String10(
+        [MinLength(5)]
+        [MaxLength(10)] string value) : base(value)
     {
-        public String10(
-            [MinLength(5)]
-            [MaxLength(10)] string value) : base(value)
-        {
-        }
     }
-
-    // Now our Name value object can simply be defined as:
-    public sealed record Name(String10 FirstName, String10 LastName);
 }
+
+// Now our Name value object can simply be defined as:
+public sealed record Name(String10 FirstName, String10 LastName);
 ```
 
 ```c#
-    // Value itself can simply be used as
-    var value = new String10("A value");
-    
-    // And is implicitly assignable to it's generic type (in this case a string)
-    string val = value;
+// Value itself can simply be used as
+var value = new String10("A value");
+
+// And is implicitly assignable to it's generic type (in this case a string)
+string val = value;
 ``` 
 
 You can and should use `ConstrainedValue` in order to create simple wrappers around primitive types
