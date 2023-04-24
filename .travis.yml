@@ -1,7 +1,0 @@
-language: csharp
-solution: Tactical.sln
-mono: none
-dotnet: 5.0 
-script:
-  - dotnet restore 
-  - dotnet test ./Tactical.DDD/Tactical.DDD.csproj 

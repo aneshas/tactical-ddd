@@ -1,6 +1,5 @@
 # Tactical DDD Helpers
 
-[![Build Status](https://travis-ci.org/aneshas/tactical-ddd.svg?branch=master)](https://travis-ci.org/aneshas/tactical-ddd)
 [![Build status](https://ci.appveyor.com/api/projects/status/vef5ta3j36p7efnn?svg=true)](https://ci.appveyor.com/project/aneshas/tactical-ddd)
 
 `Install-Package TacticalDDD`
@@ -11,15 +10,7 @@ Sourcing tactical patterns, such as Value Objects, Entities, AggregateRoots, Ent
 These helpers are mostly in the form of simple abstractions that provide help around equality and contain useful helper
 methods...
 
-## 5.0.0 Breaking changes
-
-Heads up.
-I did a major refactor and there are a lot of breaking changes plus the package now
-depends on .NET 5 and uses C# 9.
-
-Version `1.0.32` is the last version that supported C# 7 and .NET Standard
-
-### Reasoning behind this package
+### Why?
 
 I am a big proponent of "Little copy is better than a little dependency" mantra, but I also believe there exists a small
 set of facts that should always be true when implementing DDD patterns. Keeping this in mind I did (and will) try to
@@ -46,7 +37,7 @@ public sealed record CustomerId : EntityId
 {
     private Guid _guid;
 
-    private CustomerId(string guid) => 
+    private CustomerId(string guid) =>
         Guid.Parse(guid);
 
     public CustomerId() =>
@@ -106,7 +97,7 @@ public sealed class Customer : AggregateRoot<CustomerId>
     {
     }
 
-    // We want to encapsulate and thus hide parameterless constructor 
+    // We want to encapsulate and thus hide parameterless constructor
     private Customer()
     {
     }
@@ -129,7 +120,7 @@ public sealed class Customer : AggregateRoot<CustomerId>
     // if we instantiate our aggregate via `public Customer(IEnumerable<IDomainEvent> events)`
     public void On(CustomerChangedName @event)
     {
-        // ... implement the actual mutation 
+        // ... implement the actual mutation
     }
 }
 
@@ -146,7 +137,7 @@ public sealed record CustomerChangedName : DomainEvent
 
 Last but not least. Value objects imho are the most valuable pattern.
 
-Prior to `5.0.0` this package contained `ValueObject` abstract class that helped with structural 
+Prior to `5.0.0` this package contained `ValueObject` abstract class that helped with structural
 equality. With C# 9 this is no longer necessary so I ditched it.
 
 Records pretty much provide you with all that is needed to create your own value objects.
@@ -180,7 +171,7 @@ var value = new String10("A value");
 
 // And is implicitly assignable to it's generic type (in this case a string)
 string val = value;
-``` 
+```
 
 You can and should use `ConstrainedValue` in order to create simple wrappers around primitive types
 eg String50, PositiveInt, FutureDate etc... which contain simple constraints and which you then can compose into

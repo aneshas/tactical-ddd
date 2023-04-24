@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace Tactical.DDD.Tests
 {
@@ -25,9 +24,9 @@ namespace Tactical.DDD.Tests
         public void ValueConstructedAfterValidations()
         {
             var str = "valid";
-            
+
             var value = new String10(str);
-            
+
             Assert.Equal(str, value);
         }
 
