@@ -3,14 +3,16 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Npgsql;
 
 namespace Tactical.DDD.EventSourcing.Postgres.Aperture
 {
     public class PostgresOffsetTracker
     {
-        private readonly IDbConnection _conn;
+        // private readonly IDbConnection _conn;
+        private readonly NpgsqlConnection _conn;
 
-        public PostgresOffsetTracker(IDbConnection conn)
+        public PostgresOffsetTracker(NpgsqlConnection conn)
         {
             _conn = conn;
         }
