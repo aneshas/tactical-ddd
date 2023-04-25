@@ -22,7 +22,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Aperture.Core" Version="0.3.4" />
+      <PackageReference Include="Aperture.Core" Version="0.3.6" />
       <PackageReference Include="Dapper" Version="2.0.90" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
