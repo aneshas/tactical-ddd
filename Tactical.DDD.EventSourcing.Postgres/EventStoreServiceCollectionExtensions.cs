@@ -7,7 +7,7 @@ namespace Tactical.DDD.EventSourcing.Postgres
     {
         public static void AddPostgresEventStore(this IServiceCollection services, string connString)
         {
-            services.AddTransient(_ => new NpgsqlConnection(connString));
+            services.AddTransient(_ => NpgsqlDataSource.Create(connString));
             services.AddSingleton<EventStoreMigrator>();
             services.AddScoped<IEventStore, EventStore>(); 
         }
