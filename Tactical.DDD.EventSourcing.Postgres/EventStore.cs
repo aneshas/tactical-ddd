@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Aperture.Core;
@@ -26,7 +27,7 @@ namespace Tactical.DDD.EventSourcing.Postgres
 
     public class EventStore : IEventStore, IPullEventStreamEventStore
     {
-        private readonly NpgsqlConnection _conn;
+        private readonly NpgsqlDataSource _conn;
 
         private readonly JsonSerializerSettings _jsonSerializerSettings = new()
         {
@@ -35,13 +36,15 @@ namespace Tactical.DDD.EventSourcing.Postgres
             MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
         };
 
-        public EventStore(NpgsqlConnection conn)
+        public EventStore(NpgsqlDataSource conn)
         {
             _conn = conn;
         }
 
         public async Task<IEnumerable<Event>> LoadEventsAsync(EntityId aggregateId)
         {
+            await using var conn = _conn.CreateConnection();
+
             const string sql = @"SELECT 
                                 id Id, 
                                 stream_id StreamId, 
@@ -54,7 +57,7 @@ namespace Tactical.DDD.EventSourcing.Postgres
                                 WHERE stream_id::text = @AggregateId
                                 ORDER BY id";
 
-            var storedEvents = await _conn.QueryAsync<StoredEvent>(
+            var storedEvents = await conn.QueryAsync<StoredEvent>(
                 sql,
                 new {AggregateId = aggregateId.ToString()});
 
@@ -82,6 +85,8 @@ namespace Tactical.DDD.EventSourcing.Postgres
             IEnumerable<DomainEvent> events,
             Dictionary<string, string> meta)
         {
+            await using var conn = _conn.CreateConnection();
+            
             const string sql = @"INSERT INTO 
                             events(stream_id, stream_version, stream_name, data, meta)
                             VALUES (@stream_id::uuid, @stream_version, @stream_name, @data::jsonb, @meta::jsonb)";
@@ -97,7 +102,7 @@ namespace Tactical.DDD.EventSourcing.Postgres
 
             try
             {
-                await _conn.ExecuteAsync(sql, data);
+                await conn.ExecuteAsync(sql, data);
             }
             catch (PostgresException e)
             {
@@ -110,6 +115,8 @@ namespace Tactical.DDD.EventSourcing.Postgres
 
         public async Task<IEnumerable<EventData>> LoadEventsAsync(Type projection, int fromOffset, int count)
         {
+            await using var conn = _conn.CreateConnection();
+            
             const string sql = @"SELECT 
                                 id Id, 
                                 stream_id StreamId, 
@@ -123,7 +130,7 @@ namespace Tactical.DDD.EventSourcing.Postgres
                                 ORDER BY id
                                 LIMIT @Count";
 
-            var storedEvents = await _conn.QueryAsync<StoredEvent>(
+            var storedEvents = await conn.QueryAsync<StoredEvent>(
                 sql,
                 new
                 {

@@ -1,41 +1,25 @@
-using System;
 using Aperture.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using IPullEventStreamEventStore = Aperture.Core.IEventStore;
 
 namespace Tactical.DDD.EventSourcing.Postgres.Aperture
 {
     public static class ApertureServiceCollectionExtensions
     {
-        public static void AddPostgresEventStream(this IServiceCollection services) =>
-            services.AddScoped<IPullEventStreamEventStore, EventStore>();
-
         public static void AddPostgresAperture(
             this IServiceCollection services,
-            PullEventStream.Config config = default,
-            Func<ApertureAgent, ApertureAgent> configure = null)
+            string connString,
+            PullEventStream.Config config = default
+        )
         {
-            services.AddScoped<PostgresOffsetTracker>();
+            services.AddTransient(_ => NpgsqlDataSource.Create(connString));
+            services.AddTransient<IPullEventStreamEventStore, EventStore>();
+            services.AddSingleton<ITrackOffset, PostgresOffsetTracker>();
 
-            services.AddScoped<IStreamEvents>(
+            services.AddTransient<IStreamEvents>(
                 ctx => new PullEventStream(
                     ctx.GetService<IPullEventStreamEventStore>(), config));
-
-            var agent = ApertureAgentBuilder
-                .CreateDefault();
-
-            services.AddSingleton(
-                ctx =>
-                {
-                    foreach (var projection in ctx.GetServices<IProjectEvents>())
-                        agent.AddProjection(projection);
-
-                    if (configure != null)
-                        agent = configure(agent);
-
-                    return agent
-                        .UseEventStream(ctx.GetService<IStreamEvents>());
-                });
         }
     }
 }

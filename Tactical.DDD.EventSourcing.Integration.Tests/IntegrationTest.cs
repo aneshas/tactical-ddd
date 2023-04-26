@@ -9,14 +9,14 @@ namespace Tactical.DDD.EventSourcing.Integration.Tests
     public abstract class IntegrationTest
     {
         protected readonly EventStore EventStore;
-
+        
         protected readonly PostgresOffsetTracker OffsetTracker;
 
         protected IntegrationTest()
         {
-            var conn = new NpgsqlConnection(CreateDb());
+            var conn = NpgsqlDataSource.Create(CreateDb());
 
-            new EventStoreMigrator(conn).EnsureEventStoreCreated();
+            new EventStoreMigrator(conn.CreateConnection()).EnsureEventStoreCreated();
 
             EventStore = new EventStore(conn);
             OffsetTracker = new PostgresOffsetTracker(conn);
