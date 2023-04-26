@@ -7,15 +7,15 @@ namespace Tactical.DDD.EventSourcing.Postgres
 {
     public sealed class EventStoreMigrator
     {
-        private readonly NpgsqlConnection _conn;
+        private readonly NpgsqlDataSource _conn;
 
-        public EventStoreMigrator(NpgsqlConnection conn)
+        public EventStoreMigrator(NpgsqlDataSource conn)
         {
             _conn = conn;
         }
 
         public void EnsureEventStoreCreated() =>
-            _conn.Execute(Script());
+            _conn.CreateConnection().Execute(Script());
 
         private string Script()
         {

@@ -16,7 +16,7 @@ namespace Tactical.DDD.EventSourcing.Integration.Tests
         {
             var conn = NpgsqlDataSource.Create(CreateDb());
 
-            new EventStoreMigrator(conn.CreateConnection()).EnsureEventStoreCreated();
+            new EventStoreMigrator(conn).EnsureEventStoreCreated();
 
             EventStore = new EventStore(conn);
             OffsetTracker = new PostgresOffsetTracker(conn);
