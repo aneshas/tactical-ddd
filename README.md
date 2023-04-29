@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/vef5ta3j36p7efnn?svg=true)](https://ci.appveyor.com/project/aneshas/tactical-ddd)
 
-`Install-Package TacticalDDD`
+A blog post with a link to an example project [here](https://medium.com/@aneshas/c-event-sourcing-example-with-tactical-ddd-and-aperture-4ade39cbaac3)
 
 TacticalDDD contains lightweight helpers that I find myself implementing over and over again related to DDD/Event
 Sourcing tactical patterns, such as Value Objects, Entities, AggregateRoots, EntityIds etc..
